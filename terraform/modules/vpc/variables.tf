@@ -12,3 +12,9 @@ variable "no_of_availability_zones" {
   description = "The number of availability zones to use for the VPC"
   type        = number
 }
+
+variable "Owner" {
+  description = "The owner of the resources"
+  type        = string
+  default     = "Kelvin Obioha"
+}
