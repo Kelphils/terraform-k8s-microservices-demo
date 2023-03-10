@@ -132,7 +132,9 @@ output-virtualbox-iso
 /graphs/__pycache__/
 /graphs/*.json
 
-# Ignore terraform state files and lock files
-*.tfstate.*
+# Ignore terraform state files and all .terraform files
 *.terraform.*
+*.tfstate.*
+*.terraform/
+
 
