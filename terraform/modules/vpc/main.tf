@@ -119,3 +119,38 @@ resource "aws_route_table_association" "private" {
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
   route_table_id = aws_route_table.private.id
 }
+# create security group to be used later by the ingress ALB
+resource "aws_security_group" "alb" {
+  name   = "${var.project}-ingress-alb"
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    description      = "http"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "https"
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    "Name" = "${var.project}-alb"
+  }
+}

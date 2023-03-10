@@ -1,5 +1,10 @@
 provider "aws" {
   region = "us-east-1"
+  default_tags {
+    tags = {
+      terraform = "ManagedBy-${var.Owner}-${var.project}"
+    }
+  }
 }
 # s3 bucket to store terraform state
 resource "aws_s3_bucket" "terraform_state" {
@@ -54,6 +59,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
 
 # backend configuration for the terraform state in S3 bucket with the DynamoDb table as the backend and encryption, locking enabled
 terraform {
+  required_version = ">= 1.0.0, < 2.0.0"
   backend "s3" {
     # Replace this with your bucket name!
     bucket = "alt-school-third-project-terraform-state"
