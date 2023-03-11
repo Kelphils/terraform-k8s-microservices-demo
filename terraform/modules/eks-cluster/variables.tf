@@ -33,3 +33,22 @@ variable "Owner" {
   type        = string
   default     = "Kelvin Obioha"
 }
+variable "alb_security_groups" {
+  description = "Comma separated list of security groups"
+  type        = string
+}
+
+variable "autoscaling_average_cpu" {
+  type        = number
+  default     = 40
+  description = "Average CPU threshold to autoscale EKS EC2 instances."
+}
+
+variable "vpc_id" {
+  description = "The VPC ID to use for the EKS cluster"
+  type        = string
+}
+
+
+
+

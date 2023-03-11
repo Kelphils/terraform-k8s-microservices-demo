@@ -30,19 +30,19 @@ variable "semester" {
 
 variable "max_no_of_nodes" {
   description = "The maximum number of nodes to use for the EKS cluster"
-  default     = 3
+  default     = 1
   type        = number
 }
 
 variable "desired_no_of_nodes" {
   description = "The desired number of nodes to use for the EKS cluster"
-  default     = 2
+  default     = 1
   type        = number
 }
 
 variable "min_no_of_nodes" {
   description = "The minimum number of nodes to use for the EKS cluster"
-  default     = 2
+  default     = 1
   type        = number
 }
 

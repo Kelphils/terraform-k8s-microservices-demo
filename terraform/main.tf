@@ -10,12 +10,14 @@ module "vpc" {
 
 }
 
-# module "eks-cluster" {
-#   source              = "./modules/eks-cluster"
-#   project             = var.project
-#   semester            = var.semester
-#   subnets             = module.vpc.private_subnets_id
-#   max_no_of_nodes     = var.max_no_of_nodes
-#   desired_no_of_nodes = var.desired_no_of_nodes
-#   min_no_of_nodes     = var.min_no_of_nodes
-# }
+module "eks-cluster" {
+  source              = "./modules/eks-cluster"
+  project             = var.project
+  semester            = var.semester
+  subnets             = module.vpc.private_subnets_id
+  max_no_of_nodes     = var.max_no_of_nodes
+  desired_no_of_nodes = var.desired_no_of_nodes
+  min_no_of_nodes     = var.min_no_of_nodes
+  vpc_id              = module.vpc.vpc_id
+  alb_security_groups = module.vpc.alb_sg_id
+}
