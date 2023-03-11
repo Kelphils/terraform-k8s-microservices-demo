@@ -22,47 +22,10 @@ module "eks-cluster" {
     instance_types = ["t2.small", "t3.small", "t3a.small", "t2.medium", "t3.medium", "t3a.medium"]
   }
 
-  eks_managed_node_groups = {
-    workernode-1 = {
-      min_size             = 1
-      max_size             = 1
-      desired_size         = 1
-      disk_size            = 10
-      instance_types       = ["t2.medium"]
-      capacity_type        = "ON_DEMAND"
-      asg_desired_capacity = 2
-      network_interfaces = [{
-        delete_on_termination       = true
-        associate_public_ip_address = true
-      }]
-    }
-    workernode-2 = {
-      min_size             = 1
-      max_size             = 1
-      desired_size         = 1
-      disk_size            = 10
-      instance_types       = ["t2.medium"]
-      capacity_type        = "ON_DEMAND"
-      asg_desired_capacity = 2
-      network_interfaces = [{
-        delete_on_termination       = true
-        associate_public_ip_address = true
-      }]
-    }
-    tags = {
-      Name = "${var.project}-eks-cluster"
-    }
-  }
+  eks_managed_node_groups = var.eks_managed_node_groups
 
   node_security_group_additional_rules = {
-    # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/2039#issuecomment-1099032289
-    # ingress_allow_access_from_control_plane = {
-    #   type                          = "ingress"
-    #   protocol                      = "tcp"
-    #   from_port                     = 9443
-    #   to_port                       = 9443
-    #   source_cluster_security_group = true
-    # }
+
     # allow connections from ALB security group
     ingress_allow_access_from_alb_sg = {
       type                     = "ingress"
@@ -127,18 +90,18 @@ module "eks_external_dns_iam" {
   }
 }
 
-# # set fleet Autoscaling policy
-# resource "aws_autoscaling_policy" "eks_autoscaling_policy" {
-#   count = length(var.eks_managed_node_groups)
+# set fleet Autoscaling policy
+resource "aws_autoscaling_policy" "eks_autoscaling_policy" {
+  count = length(var.eks_managed_node_groups)
 
-#   name                   = "${module.eks-cluster.eks_managed_node_groups_autoscaling_group_names[count.index]}-autoscaling-policy"
-#   autoscaling_group_name = module.eks-cluster.eks_managed_node_groups_autoscaling_group_names[count.index]
-#   policy_type            = "TargetTrackingScaling"
+  name                   = "${module.eks-cluster.eks_managed_node_groups_autoscaling_group_names[count.index]}-autoscaling-policy"
+  autoscaling_group_name = module.eks-cluster.eks_managed_node_groups_autoscaling_group_names[count.index]
+  policy_type            = "TargetTrackingScaling"
 
-#   target_tracking_configuration {
-#     predefined_metric_specification {
-#       predefined_metric_type = "ASGAverageCPUUtilization"
-#     }
-#     target_value = var.autoscaling_average_cpu
-#   }
-# }
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = var.autoscaling_average_cpu
+  }
+}

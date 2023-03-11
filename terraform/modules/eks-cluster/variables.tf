@@ -49,6 +49,35 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "eks_managed_node_groups" {
+  description = "A list of maps of EKS managed node groups to create"
+  type        = map(any)
+  default = {
+    workernode-1 = {
+      min_size       = 1
+      max_size       = 1
+      desired_size   = 1
+      disk_size      = 10
+      instance_types = ["t2.medium"]
+      capacity_type  = "ON_DEMAND"
+      network_interfaces = [{
+        delete_on_termination       = true
+        associate_public_ip_address = true
+      }]
+    }
+    workernode-2 = {
+      min_size       = 1
+      max_size       = 1
+      desired_size   = 1
+      disk_size      = 10
+      instance_types = ["t2.medium"]
+      capacity_type  = "ON_DEMAND"
+      network_interfaces = [{
+        delete_on_termination       = true
+        associate_public_ip_address = true
+      }]
+    }
 
-
+  }
+}
 
