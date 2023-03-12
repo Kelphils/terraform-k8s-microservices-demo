@@ -12,8 +12,8 @@ variable "second_octet" {
 
 variable "project" {
   description = "Project Environment"
-  default     = "alt-school-project"
   type        = string
+  default     = "alt-school-project"
 }
 
 variable "no_of_availability_zones" {
@@ -51,3 +51,4 @@ variable "Owner" {
   type        = string
   default     = "Kelvin Obioha"
 }
+

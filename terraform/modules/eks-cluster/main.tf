@@ -11,11 +11,6 @@ module "eks-cluster" {
   cluster_endpoint_public_access  = true
   subnet_ids                      = var.subnets
   vpc_id                          = var.vpc_id
-  # cluster_security_group_id             = [module.vpc.alb_sg_id]
-  # cluster_additional_security_group_ids = [module.vpc.alb_sg_id]
-  # node_security_group_id                = [module.vpc.alb_sg_id]
-  # alb_security_groups = var.alb_security_groups
-
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {

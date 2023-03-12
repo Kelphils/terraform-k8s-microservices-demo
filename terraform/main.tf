@@ -21,3 +21,9 @@ module "eks-cluster" {
   vpc_id              = module.vpc.vpc_id
   alb_security_groups = module.vpc.alb_sg_id
 }
+
+module "eks-config" {
+  source       = "./modules/eks-config"
+  cluster_name = module.eks-cluster.cluster_name
+  project      = var.project
+}
